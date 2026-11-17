@@ -1,29 +1,19 @@
 <script>
     import { onMount } from 'svelte';
+	import { get } from '../lib/api.svelte';
+
     let response = $state(null);
 
     async function load(){
-        let url = window.location.href;
-        if (url.endsWith(':5173/')) url = url.replace(':5173/',':8000/')
-        url += 'api/hello';
-        console.log({url});
-        const resp = await fetch(url);
-        if (resp.ok){
-            response = await resp.json();
-        }
+        const resp = await get('hello');
+        if (resp.ok) response = await resp.json();
     }
 
-    onMount(load);
+    window.setTimeout(load,1000);
 </script>
 
-
 {#if response}
-<h2>Response from API:</h2>
-<pre>
-    <code>
-        {JSON.stringify(response,null,2)}
-    </code>
-</pre>
+<p>Received response from API: {response.message}</p>
 {:else}
-<div>Hello?</div>
+<div>Contacting the backend…</div>
 {/if}
