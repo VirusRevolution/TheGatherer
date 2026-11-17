@@ -20,7 +20,7 @@ if __name__ == "__main__":
     }
 
     app = FastAPI()
-    app.mount("/", StaticFiles(directory="../Frontend", html=True), name="static")
+    app.mount("/", StaticFiles(directory="../Frontend/dist", html=True), name="static")
     LOG.info("Starting webserver…")
 
     uvicorn.run(app, **options)

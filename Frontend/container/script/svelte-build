@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [ ! -f "/frontend/vite.config.js" ]; then
+  npm create -y vite@6 frontend -- --template svelte
+else
+  echo Svelte-Project recognized, starting…
+fi
+cd frontend
+npm install
+
+npm run build
