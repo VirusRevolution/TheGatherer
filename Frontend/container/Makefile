@@ -15,7 +15,7 @@ devel: devel-image
 	-podman rm -f svelte
 	podman run --name svelte \
 		-v $$(dirname $$(pwd)):/frontend \
-		-p 5173:5173 \
+		-p 127.0.0.1:5173:5173 \
 		-ti svelte /opt/svelte-init
 
 release-image: build

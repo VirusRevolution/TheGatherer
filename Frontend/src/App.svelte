@@ -2,6 +2,7 @@
   import svelteLogo from './assets/svelte.svg'
   import viteLogo from '/vite.svg'
   import Counter from './lib/Counter.svelte'
+  import Hello from './routes/Hello.svelte';
 </script>
 
 <main>
@@ -18,6 +19,8 @@
   <div class="card">
     <Counter />
   </div>
+
+  <Hello/>
 
   <p>
     Check out <a href="https://github.com/sveltejs/kit#readme" target="_blank" rel="noreferrer">SvelteKit</a>, the official Svelte app framework powered by Vite!

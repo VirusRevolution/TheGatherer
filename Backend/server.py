@@ -1,7 +1,11 @@
 import uvicorn
 from logging import DEBUG, getLogger
 from fastapi import FastAPI
-from starlette.staticfiles import StaticFiles
+from fastapi.middleware.cors import CORSMiddleware
+
+from fastapi.staticfiles import StaticFiles
+
+from api.api import API
 from config.config import config
 from utils.logging_extension import add_logging_level, setup_logging
 
@@ -20,7 +24,15 @@ if __name__ == "__main__":
     }
 
     app = FastAPI()
+    app.include_router(API(), prefix="/api")
     app.mount("/", StaticFiles(directory="../Frontend/dist", html=True), name="static")
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origin_regex=".*",
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"]
+    )
     LOG.info("Starting webserver…")
 
     uvicorn.run(app, **options)
