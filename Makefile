@@ -5,13 +5,13 @@ STORAGE=$$(yq -r .storage config.yml)
 default: development_environment
 
 # run a development environment, consisting of a databse container and the software in a container
-development_environment: network local_database local_webservice
+development_environment: local_database local_webservice
 
 network:
 	-podman network create ${PROJECT}_net
 
 # launch the database for local development in a container
-local_database: local_storage
+local_database: local_storage network
 	-@podman run --name ${PROJECT}_db \
 		 --env MARIADB_ROOT_PASSWORD=${DB_ROOT_PASS} \
 		 --volume ${STORAGE}/mariadb:/var/lib/mysql:Z \

@@ -32,7 +32,9 @@ This will
 * create a user with password as configured in [Backend/config.yml]
 * grant access to the created database to the corresponding user
 
-## Launch
+After that, you can launch the code locally by running `python server.py` in the Backend directory.
+
+## Launch Backend in another container
 
 * open a terminal at the project root
 * issue `make`
