@@ -1,6 +1,7 @@
 from logging import getLogger
 
-from model.user import User, OneTimePassword
+from model.user import User, OneTimePassword, SessionData
+
 
 def not_implemented():
     raise RuntimeError("This method must be overwritten!")
@@ -40,10 +41,12 @@ class UserDB:
     def get_user_by_otp(self, otp: str) -> User | None:
         not_implemented()
 
-    def get_user_by_session_id(self, session_id: str) -> User | None:
+    def get_session(self, session_id: str) -> SessionData | None:
         """
         if the session id is valid: load and return user
         otherwise: return None
+
+        if session entry exists in database, but is expired: drop it
         :param session_id:
         :return:
         """

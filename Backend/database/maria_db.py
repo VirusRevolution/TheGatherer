@@ -5,7 +5,7 @@ from database.user_db   import UserDB
 from logging            import getLogger
 from uuid               import uuid4
 
-from model.user import User
+from model.user import User, SessionData
 
 LOG            = getLogger("MariaDB")
 DB_VERSION     = "db_version"
@@ -137,7 +137,7 @@ class MariaDB(UserDB):
         # todo: load user
         pass
 
-    def get_user_by_session_id(self, session_id: str) -> User | None:
+    def get_session(self, session_id: str) -> SessionData | None:
         # todo: check session id is valid
-        # todo: load and return user if it is
+        # todo: load and return session data if it is
         pass
