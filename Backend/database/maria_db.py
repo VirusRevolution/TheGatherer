@@ -1,4 +1,4 @@
-import mariadb
+import pymysql
 from config.config import config
 from database.api  import DatabaseAPI
 from logging       import getLogger
@@ -14,7 +14,7 @@ class MariaDB(DatabaseAPI):
         create connection to MariaDB, update tables if required
         """
         super().__init__()
-        self.connection = mariadb.connect(
+        self.connection = pymysql.connect(
             host=config.db.host,
             user=config.db.user,
             password=config.db.password,

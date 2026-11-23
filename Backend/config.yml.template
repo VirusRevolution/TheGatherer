@@ -1,5 +1,5 @@
 db:
-  host: localhost
+  host: your local ip address
   user: crc_user
   password: crc_password
   database: crc_db
