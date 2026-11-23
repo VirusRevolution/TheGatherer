@@ -45,4 +45,4 @@ db_init: local_database
 	@DB=$$(yq -r .db.database Backend/config.yml); \
 	USER=$$(yq -r .db.user Backend/config.yml); \
 	PASS=$$(yq -r .db.password Backend/config.yml); \
-	echo "create database $${DB}; use $${DB}; grant all privileges on $${DB} to '$${USER}'@'%' identified by '$${PASS}'; flush privileges; exit;" | podman exec -ti ${PROJECT}_db mariadb -u root -p${DB_ROOT_PASS}
+	echo "create database $${DB}; use $${DB}; grant all privileges on $${DB}.* to '$${USER}'@'%' identified by '$${PASS}'; flush privileges; exit;" | podman exec -ti ${PROJECT}_db mariadb -u root -p${DB_ROOT_PASS}
