@@ -1,9 +1,7 @@
-import logging
-import yaml
-from pathlib import Path
-
-from model.errors import MissingConfigError
+import logging, yaml
+from model.errors  import MissingConfigError
 from model.dotdict import DotDict
+from pathlib       import Path
 
 logger = logging.getLogger("Configuration")
 

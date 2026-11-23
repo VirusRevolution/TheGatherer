@@ -1,12 +1,10 @@
 import uvicorn
-from logging import DEBUG, getLogger
-from fastapi import FastAPI
+from api.api                 import API
+from config.config           import config
+from logging                 import DEBUG, getLogger
+from fastapi                 import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
-from fastapi.staticfiles import StaticFiles
-
-from api.api import API
-from config.config import config
+from fastapi.staticfiles     import StaticFiles
 from utils.logging_extension import add_logging_level, setup_logging
 
 LOG = getLogger("server")
