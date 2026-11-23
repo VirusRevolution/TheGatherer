@@ -21,6 +21,17 @@ To launch the two containers (Code + DB), you need to install the following tool
 
 Copy the file `config.yml.template to config.yml` and edit it to fulfill your needs.
 
+## Launch DB and init
+
+If you set up [config.yml] and [Backend/config.yml] properly, you can launch `make db_init`:
+
+This will
+
+* spin up the database container
+* create the database configured on [Backend/config.yml]
+* create a user with password as configured in [Backend/config.yml]
+* grant access to the created database to the corresponding user
+
 ## Launch
 
 * open a terminal at the project root
@@ -31,6 +42,8 @@ Copy the file `config.yml.template to config.yml` and edit it to fulfill your ne
     * launch a container with the python runtime and the code mounted into it 
 
 [Backend]: Backend
+[Backend/config.yml]: Backend/config.yml
+[config.yml]: config.yml
 [Frontend]: Frontend
 [make]: https://www.gnu.org/software/make
 [mariadb]: https://mariadb.org

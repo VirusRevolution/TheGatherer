@@ -14,7 +14,6 @@ class API(APIRouter):
         LOG.info("attaching /hello to /api…")
         self.add_api_route(path="/hello", endpoint=self._hello, methods=[GET], tags=["API", "hello world"])
         self.db : DatabaseAPI = MariaDB()
-        print(self.db)
 
     def _hello(self):
         return {"message": "Hello World!"}
