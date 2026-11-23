@@ -1,0 +1,10 @@
+TABLE_INSTITUTIONS = "institutions"
+TABLE_SETTINGS     = "settings"
+TABLE_USERS        = "users"
+
+CREATION_TIME = "creation_time"
+DEPARTMENT = "department"
+ID = "id"
+INSTITUTION = "institution"
+NAME = "name"
+USER_ID = "email"

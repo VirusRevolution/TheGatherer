@@ -1,13 +1,14 @@
 import pymysql
-from config.config import config
-from database.api  import DatabaseAPI
-from logging       import getLogger
+from config.config    import config
+from database.constants import *
+from database.user_db import UserDB
+from logging          import getLogger
 
-LOG = getLogger("MariaDB")
-DB_VERSION = "db_version"
-TABLE_SETTINGS = "settings"
 
-class MariaDB(DatabaseAPI):
+LOG            = getLogger("MariaDB")
+DB_VERSION     = "db_version"
+
+class MariaDB(UserDB):
 
     def __init__(self):
         """
@@ -24,6 +25,18 @@ class MariaDB(DatabaseAPI):
         self._update_tables()
         LOG.info(f"Connected to database at {config.db.host}")
 
+    def _create_institutions_table(self):
+        with self.connection.cursor() as cursor:
+            sql = f"""
+            CREATE TABLE IF NOT EXISTS {TABLE_INSTITUTIONS} (
+                {ID}            INT PRIMARY KEY,
+                {NAME}          VARCHAR(255) NOT NULL,
+                {DEPARTMENT}    VARCHAR(255),
+                {CREATION_TIME} TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+            );"""
+            cursor.execute(sql)
+            self.connection.commit()
+        LOG.debug("Settings table created or already exists")
 
     def _create_settings_table(self):
         """
@@ -31,8 +44,22 @@ class MariaDB(DatabaseAPI):
         Within this class we use it to keep track of the database version.
         :return:
         """
+        sql = f"CREATE TABLE IF NOT EXISTS {TABLE_SETTINGS} (`key` VARCHAR(255) NOT NULL PRIMARY KEY, value TEXT)"
         with self.connection.cursor() as cursor:
-            cursor.execute(f"CREATE TABLE IF NOT EXISTS {TABLE_SETTINGS} (`key` VARCHAR(255) NOT NULL PRIMARY KEY, value TEXT)")
+            cursor.execute(sql)
+            self.connection.commit()
+        LOG.debug("Settings table created or already exists")
+
+    def _create_user_table(self):
+        with self.connection.cursor() as cursor:
+            sql = f"""
+            CREATE TABLE IF NOT EXISTS {TABLE_USERS} (
+                {USER_ID} VARCHAR(255) PRIMARY KEY,
+                {NAME}    VARCHAR(255),
+                {INSTITUTION}   INT REFERENCES {TABLE_INSTITUTIONS}({ID}) ON UPDATE CASCADE,
+                {CREATION_TIME} TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+            )"""
+            cursor.execute(sql)
             self.connection.commit()
         LOG.debug("Settings table created or already exists")
 
@@ -58,6 +85,15 @@ class MariaDB(DatabaseAPI):
         self._create_settings_table()
         return 1
 
+    def _update1(self) -> int:
+        """
+        this method is used to create the settings table
+        :return: new value db_version
+        """
+        self._create_institutions_table()
+        self._create_user_table()
+        return 2
+
     def _update_tables(self):
         """
         create/update tables as required
@@ -65,8 +101,9 @@ class MariaDB(DatabaseAPI):
         """
         db_version = self._get_db_version()
         if db_version == 0:
-                db_version = self._update0()
-
+            db_version = self._update0()
+        if db_version == 1:
+            db_version = self._update1()
         # create/update tables here
 
         self._write_db_version(db_version)

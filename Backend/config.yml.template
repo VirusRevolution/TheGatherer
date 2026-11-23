@@ -5,6 +5,12 @@ db:
   database: crc_db
   port: 3306
 
+smtp:
+  user: joe@example.com
+  port: 587
+  host: smtp.example.com
+  password: joes-secret-password
+
 web:
   bind_address: 0.0.0.0
   port: 8000
