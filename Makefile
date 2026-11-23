@@ -1,6 +1,9 @@
 PROJECT="the_gatherer"
 DB_ROOT_PASS=$$(yq -r .local_database.root_pass config.yml)
 STORAGE=$$(yq -r .storage config.yml)
+DB_PORT=$$(yq -r .ports.database config.yml)
+FRONT_PORT=$$(yq -r .ports.frontend config.yml)
+BACK_PORT=$$(yq -r .ports.backend config.yml)
 
 default: development_environment
 
@@ -16,7 +19,7 @@ local_database: local_storage network
 		 --env MARIADB_ROOT_PASSWORD=${DB_ROOT_PASS} \
 		 --volume ${STORAGE}/mariadb:/var/lib/mysql:Z \
 		 --network ${PROJECT}_net \
-		 -p 3306:3306 \
+		 -p ${DB_PORT}:3306 \
 		 --detach docker.io/mariadb:latest \
 	&& sleep 5
 
@@ -31,7 +34,8 @@ local_webservice: image
 	  --replace \
 	  --volume $$(pwd):/opt/crc \
 	  --network ${PROJECT}_net \
-	  -p 8000:8000 \
+	  -p ${FRONT_PORT}:5173 \
+	  -p ${BACK_PORT}:8000 \
 	  -ti ${PROJECT}
 
 # make sure the storage directory exists
