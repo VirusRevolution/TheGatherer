@@ -5,6 +5,9 @@ from logging                 import DEBUG, getLogger
 from fastapi                 import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles     import StaticFiles
+
+from database.maria_db import MariaDB
+from session.api import SessionAPI
 from utils.logging_extension import add_logging_level, setup_logging
 
 LOG = getLogger("server")
@@ -21,8 +24,10 @@ if __name__ == "__main__":
         "log_config": None
     }
 
+    database = MariaDB()
     app = FastAPI()
     app.include_router(API(), prefix="/api")
+    app.include_router(SessionAPI(database), prefix="/api/session")
     app.mount("/", StaticFiles(directory="../Frontend/dist", html=True), name="static")
     app.add_middleware(
         CORSMiddleware,

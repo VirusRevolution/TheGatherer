@@ -1,8 +1,7 @@
 import smtplib
-from operator import truediv
 
 from config.config import config
-from email.mime.text import MIMEText
+from email.mime.text        import MIMEText
 
 
 def send_email(receiver: str, subject: str, content: str) -> bool:

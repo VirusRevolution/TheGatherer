@@ -1,9 +1,11 @@
 import pymysql
-from config.config    import config
+from config.config      import config
 from database.constants import *
-from database.user_db import UserDB
-from logging          import getLogger
+from database.user_db   import UserDB
+from logging            import getLogger
+from uuid               import uuid4
 
+from model.user import User
 
 LOG            = getLogger("MariaDB")
 DB_VERSION     = "db_version"
@@ -25,7 +27,7 @@ class MariaDB(UserDB):
         self._update_tables()
         LOG.info(f"Connected to database at {config.db.host}")
 
-    def _create_institutions_table(self):
+    def _create_table_institutions(self):
         with self.connection.cursor() as cursor:
             sql = f"""
             CREATE TABLE IF NOT EXISTS {TABLE_INSTITUTIONS} (
@@ -38,7 +40,7 @@ class MariaDB(UserDB):
             self.connection.commit()
         LOG.debug("Settings table created or already exists")
 
-    def _create_settings_table(self):
+    def _create_table_settings(self):
         """
         The settings table is a key value store.
         Within this class we use it to keep track of the database version.
@@ -50,7 +52,7 @@ class MariaDB(UserDB):
             self.connection.commit()
         LOG.debug("Settings table created or already exists")
 
-    def _create_user_table(self):
+    def _create_table_users(self):
         with self.connection.cursor() as cursor:
             sql = f"""
             CREATE TABLE IF NOT EXISTS {TABLE_USERS} (
@@ -82,7 +84,7 @@ class MariaDB(UserDB):
         this method is used to create the settings table
         :return: new value db_version
         """
-        self._create_settings_table()
+        self._create_table_settings()
         return 1
 
     def _update1(self) -> int:
@@ -90,8 +92,8 @@ class MariaDB(UserDB):
         this method is used to create the settings table
         :return: new value db_version
         """
-        self._create_institutions_table()
-        self._create_user_table()
+        self._create_table_institutions()
+        self._create_table_users()
         return 2
 
     def _update_tables(self):
@@ -118,3 +120,24 @@ class MariaDB(UserDB):
             cursor.execute(f"INSERT INTO {TABLE_SETTINGS} (`key`, value) VALUES (%s, %s) ON DUPLICATE KEY UPDATE value = VALUES(value)", (DB_VERSION, str(version)))
             self.connection.commit()
             LOG.debug(f"Database version set to {version}")
+
+# start of public methods
+
+    def create_otp_for(self, email: str) -> str:
+        otp = str(uuid4())
+        # todo: store
+        return str(otp)
+
+    def create_session_for(self, user: User) -> str:
+        # create session, assign expiration time, return session id
+        pass
+
+    def get_user_by_otp(self, otp: str) -> User | None:
+        # todo: check otp is valid
+        # todo: load user
+        pass
+
+    def get_user_by_session_id(self, session_id: str) -> User | None:
+        # todo: check session id is valid
+        # todo: load and return user if it is
+        pass
