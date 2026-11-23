@@ -1,0 +1,4 @@
+local_database:
+  root_pass: set_some_password_here
+
+storage: /tmp/localstore
