@@ -1,2 +1,13 @@
+db:
+  host: localhost
+  user: crc_user
+  password: crc_password
+  database: crc_db
+  port: 3306
+
+web:
+  bind_address: 0.0.0.0
+  port: 8000
+
 logging:
   root: TRACE

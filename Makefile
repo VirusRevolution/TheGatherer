@@ -8,7 +8,7 @@ default: development_environment
 development_environment: network local_database local_webservice
 
 network:
-	podman network create ${PROJECT}_net
+	-podman network create ${PROJECT}_net
 
 # launch the database for local development in a container
 local_database: local_storage
