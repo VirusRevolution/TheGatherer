@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM docker.io/alpine:latest
 LABEL maintainer "Stephan Richter <stephan.richter@uni-jena.de>"
 RUN apk add bash npm python3 py3-fastapi py3-pymysql py3-pip py3-yaml uvicorn
 EXPOSE 8000
