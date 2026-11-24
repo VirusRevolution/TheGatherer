@@ -1,0 +1,12 @@
+name: crc
+channels:
+  - anaconda
+  - conda-forge
+  - defaults
+  - https://repo.anaconda.com/pkgs/main
+  - https://repo.anaconda.com/pkgs/r
+dependencies:
+  - fastapi
+  - pymysql
+  - pyyaml
+  - uvicorn
