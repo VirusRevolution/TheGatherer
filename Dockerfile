@@ -5,6 +5,7 @@ EXPOSE 8000
 RUN echo '#!/bin/bash' > /launch \
  && echo 'cd /opt/crc/Frontend' >> /launch \
  && echo 'npm install' >> /launch \
+ && echo 'npm run build' >> /launch \
  && echo 'npm run dev -- --host 2>&1 >/dev/null &' >> /launch \
  && echo 'cd /opt/crc/Backend' >> /launch \
  && echo 'python server.py' >> /launch
