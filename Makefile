@@ -1,4 +1,4 @@
-PROJECT="the_gatherer"
+PROJECT=the_gatherer
 DB_ROOT_PASS=$$(yq -r .local_database.root_pass config.yml)
 STORAGE=$$(yq -r .storage config.yml)
 DB_PORT=$$(yq -r .ports.database config.yml)
