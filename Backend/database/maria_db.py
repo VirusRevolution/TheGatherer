@@ -1,4 +1,6 @@
 import pymysql
+from pymysql import ProgrammingError
+
 from config.config      import config
 from database.constants import *
 from database.user_db   import UserDB
@@ -9,6 +11,7 @@ from model.user import User, SessionData
 
 LOG            = getLogger("MariaDB")
 DB_VERSION     = "db_version"
+TABLE_MISSING  = "42S02"
 
 class MariaDB(UserDB):
 
@@ -72,11 +75,17 @@ class MariaDB(UserDB):
         If the table does not exist, return 0
         :return:
         """
-        with self.connection.cursor() as cursor:
-            cursor.execute(f"SELECT value FROM {TABLE_SETTINGS} WHERE `key` = '{DB_VERSION}'")
-            result = cursor.fetchone()
-            if result is None:
+        try:
+            with self.connection.cursor() as cursor:
+                cursor.execute(f"SELECT value FROM {TABLE_SETTINGS} WHERE `key` = '{DB_VERSION}'")
+                result = cursor.fetchone()
+                if result is None:
+                    return 0
+        except ProgrammingError as e:
+            if e.sqlstate == TABLE_MISSING:
                 return 0
+            raise e
+
         return int(result[0])
 
     def _update0(self) -> int:
