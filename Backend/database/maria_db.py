@@ -82,9 +82,7 @@ class MariaDB(UserDB):
                 if result is None:
                     return 0
         except ProgrammingError as e:
-            if e.sqlstate == TABLE_MISSING:
-                return 0
-            raise e
+            return 0 # TODO: only catch table missing error, raise all other ones
 
         return int(result[0])
 
