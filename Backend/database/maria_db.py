@@ -14,6 +14,10 @@ DB_VERSION     = "db_version"
 TABLE_MISSING  = "42S02"
 
 class MariaDB(UserDB):
+    """
+    This class is an IMPLEMENTATION of the following interfaces:
+    * UserDB
+    """
 
     def __init__(self):
         """

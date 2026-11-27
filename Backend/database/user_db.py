@@ -8,7 +8,7 @@ def not_implemented():
 
 class UserDB:
     """
-	This is just the interface
+	This class is an INTERFACE that abstracts methods required for user management.
 
 	Methods we want to use in our application logic are defined here.
 	The actual implementations are in the DB-specific implementations, e.g. mariadb.py
